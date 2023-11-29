@@ -1,0 +1,14 @@
+package perpustakaanmodelxyz;
+
+/**
+ *
+ * @author ACER
+ */
+public class Notifikasi {
+    static void notifikasipengembalian(){
+        System.out.println("Pengembalikan buku dilakukan");
+    }
+    static void notifikasipeminjaman(){
+        System.out.println("Peminjaman buku dilakukan");
+    }
+}
