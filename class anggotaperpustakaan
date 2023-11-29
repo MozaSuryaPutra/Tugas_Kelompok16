@@ -9,15 +9,12 @@ package perpustakaanmodelxyz;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class AnggotaPerpustakaan {
-    
-ArrayList<TransaksiPeminjaman> pemadmin = new ArrayList<>();
+public class AnggotaPerpustakaan {   
+    ArrayList<TransaksiPeminjaman> pemadmin = new ArrayList<>();
     ArrayList <TransaksiPengembalian> foradmin = new ArrayList<>();
     ArrayList<TransaksiPeminjaman> pinjam = new ArrayList<>();
     ArrayList <TransaksiPengembalian> balik = new ArrayList<>();
-    
-    
- 
+
 private String nama;
     private int nomornggota;
     private String alamat;
@@ -27,6 +24,7 @@ private String nama;
     TransaksiPeminjaman transaksii;
     TransaksiPengembalian kembalii;
     Admin admin ;
+
     public ArrayList<TransaksiPeminjaman> getPinjam() {
         return pinjam;
     }
@@ -42,6 +40,7 @@ private String nama;
     public ArrayList<TransaksiPengembalian> getBalik() {
         return balik;
     }
+
     public String getNama() {
         return nama;
     }
@@ -108,7 +107,8 @@ private String nama;
             }
         }if(!sudahada){
             System.out.println("        Buku Tidak Ditemukan!   ");
-        }  System.out.println("\n\t------------------");
+        }  
+        System.out.println("\n\t------------------");
         System.out.println("       ||PENCARIAN BERAKHIR||");
         System.out.println("\t------------------");;
     }
@@ -183,7 +183,7 @@ private String nama;
     
     void kembalibuku(TransaksiPengembalian kem){        
         boolean sudahada = false;
-       
+     
         if(pinjam.isEmpty()){
             System.out.println("Buku kosong ");
         }else{
