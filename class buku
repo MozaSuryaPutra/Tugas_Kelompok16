@@ -41,15 +41,11 @@ private String judul;
     public void setTersedia(boolean tersedia) {
         this.tersedia = tersedia;
     }
+
     public Buku(String judul, int noISBN, String pengarang, boolean tersedia) {
         this.judul = judul;
         this.noISBN = noISBN;
         this.pengarang = pengarang;
         this.tersedia = tersedia;
-    }
-
-    
-    
-    
-    
+    }    
 }
