@@ -11,43 +11,43 @@ public class TransaksiPengembalian {
    private Buku buku;
    private AnggotaPerpustakaan anggota;
    private Date tanggal;
-    public int getIdTransaksi() {
-        return IdTransaksi;
-    }
-
-    public void setIdTransaksi(int IdTransaksi) {
-        this.IdTransaksi = IdTransaksi;
-    }
-
-    public Buku getBuku() {
-        return buku;
-    }
-
-    public void setBuku(Buku buku) {
-        this.buku = buku;
-    }
-
-    public AnggotaPerpustakaan getAnggota() {
-        return anggota;
-    }
-
-    public void setAnggota(AnggotaPerpustakaan anggota) {
-        this.anggota = anggota;
-    }
-
-    public Date getTanggal() {
-        return tanggal;
-    }
-
-    public void setTanggal(Date tanggal) {
-        this.tanggal = tanggal;
-    }
    
+   public int getIdTransaksi() {
+      return IdTransaksi;
+   }
 
-    public TransaksiPengembalian(int IdTransaksi, Buku buku, AnggotaPerpustakaan anggota, Date tanggal) {
-        this.IdTransaksi = IdTransaksi;
-        this.buku = buku;
-        this.anggota = anggota;
-        this.tanggal = tanggal;
-    }
+   public void setIdTransaksi(int IdTransaksi) {
+      this.IdTransaksi = IdTransaksi;
+   }
+
+   public Buku getBuku() {
+      return buku;
+   }
+
+   public void setBuku(Buku buku) {
+      this.buku = buku;
+   }
+
+   public AnggotaPerpustakaan getAnggota() {
+      return anggota;
+   }
+
+   public void setAnggota(AnggotaPerpustakaan anggota) {
+      this.anggota = anggota;
+   }
+
+   public Date getTanggal() {
+      return tanggal;
+   }
+
+   public void setTanggal(Date tanggal) {
+      this.tanggal = tanggal;
+   }
+   
+   public TransaksiPengembalian(int IdTransaksi, Buku buku, AnggotaPerpustakaan anggota, Date tanggal) {
+      this.IdTransaksi = IdTransaksi;
+      this.buku = buku;
+      this.anggota = anggota;
+      this.tanggal = tanggal;
+   }
 }
