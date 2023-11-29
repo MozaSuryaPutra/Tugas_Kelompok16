@@ -32,7 +32,7 @@ public class PerpustakaanModelXYZ {
             System.out.println("Nama Pengarang\t\t: " + loo.getPengarang());
             System.out.println("Nomor ISBN\t\t: " + loo.getNoISBN());
             System.out.println("");
-    }
+        }
         
         //ANGGOTA CARI BUKU     
         anggota.cariBuku(admin, "naruto");
@@ -45,7 +45,7 @@ public class PerpustakaanModelXYZ {
         //ADMIN MELIHAT DAFTAR TRANSAKSI DAN HISTORI  
         admin.lihatdaftartransaksi(anggota);
         admin.liatHistoriAnggota(anggota);
-        }
+    }
 }
 
 
@@ -61,13 +61,13 @@ public class Admin {
     private String password;
     ArrayList <Buku> DaftarBuku = new ArrayList() ;
 
-    public ArrayList<Buku> getDaftarBuku() {       
-       return DaftarBuku;
+    public ArrayList<Buku> getDaftarBuku() {        
+        return DaftarBuku;
     }
- 
+
     public Admin(String username, String password) {
         this.username = username;
-        this.password = password;        
+        this.password = password;      
     }
     
     boolean izinmasuk(String usernama,String password){
@@ -79,7 +79,7 @@ public class Admin {
     }
     
     public void lihatinformasianggota(AnggotaPerpustakaan anggota) {
-        System.out.println("Masukkan username dan password");   
+        System.out.println("Masukkan username dan password");
         System.out.println("Nama Anggota "+anggota.getNama());   
         System.out.println("Nomor Alamat : "+anggota.getNomornggota());
         System.out.println("Alamat : "+anggota.getAlamat());    
@@ -99,26 +99,26 @@ public class Admin {
             }
             if(!sudahada){
                 DaftarBuku.add(buku);                
-            }            
+            } 
         }
     }
 
     void hapusbuku(Buku buku){
         boolean sudahada = false;
         if(DaftarBuku.isEmpty()){
-           System.out.println("Daftar buku kosong");
-       }else{
-           for(Buku daftar : DaftarBuku){
-               if(daftar.getNoISBN() == buku.getNoISBN()){
-                  sudahada = true;
-                  DaftarBuku.remove(buku);
-                  break;
-               }
-           }
-           if(!sudahada){
-               System.out.println("Buku tidak ditemukan");
-           }
-       }
+            System.out.println("Daftar buku kosong");
+        }else{
+            for(Buku daftar : DaftarBuku){
+                if(daftar.getNoISBN() == buku.getNoISBN()){
+                    sudahada = true;
+                    DaftarBuku.remove(buku);
+                    break;
+                }
+            }
+            if(!sudahada){
+                System.out.println("Buku tidak ditemukan");
+            }
+        }
     }
 
     void liatHistoriAnggota(AnggotaPerpustakaan anggota){
@@ -151,8 +151,7 @@ public class Admin {
             System.out.println("Judul Buku\t\t: "+transaksi.getBuku().getJudul());
             System.out.println("Tanggal\t\t\t: "+transaksi.getTanggal());
             System.out.println("");
-        }
-        
+        }     
         System.out.println("\n\n\t----------------------------------");
         System.out.println("\t|| BUKU YANG TELAH DIKEMBALIKAN ||");
         System.out.println("\t----------------------------------");
@@ -163,28 +162,17 @@ public class Admin {
             System.out.println("Tanggal\t\t\t: "+transaksi.getTanggal());
             System.out.println("");
         }
-    }   
-    
-    
-    
-    
-    
-    
+    }      
 }
+
 
 //------------------------------3. CLASS ANGGOTAPERPUSTAKAAN------------------------------------
 package perpustakaanmodelxyz;
 
-/**
- *
- * @author ACER
- */
-
-
 import java.util.ArrayList;
 import java.util.Date;
 public class AnggotaPerpustakaan {    
-ArrayList<TransaksiPeminjaman> pemadmin = new ArrayList<>();
+    ArrayList<TransaksiPeminjaman> pemadmin = new ArrayList<>();
     ArrayList <TransaksiPengembalian> foradmin = new ArrayList<>();
     ArrayList<TransaksiPeminjaman> pinjam = new ArrayList<>();
     ArrayList <TransaksiPengembalian> balik = new ArrayList<>();
@@ -205,7 +193,7 @@ ArrayList<TransaksiPeminjaman> pemadmin = new ArrayList<>();
         return balik;
     }
  
-private String nama;
+    private String nama;
     private int nomornggota;
     private String alamat;
     private String username;
@@ -377,15 +365,12 @@ private String nama;
     }
 }
 
+
 //------------------------------4. CLASS BUKU------------------------------------
 package perpustakaanmodelxyz;
 
-/**
- *
- * @author ACER
- */
 public class Buku {
-private String judul;
+    private String judul;
     private int noISBN;
     private String pengarang;
     private boolean tersedia;
@@ -421,6 +406,7 @@ private String judul;
     public void setTersedia(boolean tersedia) {
         this.tersedia = tersedia;
     }
+
     public Buku(String judul, int noISBN, String pengarang, boolean tersedia) {
         this.judul = judul;
         this.noISBN = noISBN;
@@ -429,20 +415,18 @@ private String judul;
     }    
 }
 
+
 //------------------------------5. CLASS TRANSAKSIPENGEMBALIAN------------------------------------
 package perpustakaanmodelxyz;
 
 import java.util.Date;
 
-/**
- *
- * @author ACER
- */
 public class TransaksiPengembalian {
-   private int IdTransaksi;
-   private Buku buku;
-   private AnggotaPerpustakaan anggota;
-   private Date tanggal;
+    private int IdTransaksi;
+    private Buku buku;
+    private AnggotaPerpustakaan anggota;
+    private Date tanggal;
+
     public int getIdTransaksi() {
         return IdTransaksi;
     }
@@ -473,8 +457,7 @@ public class TransaksiPengembalian {
 
     public void setTanggal(Date tanggal) {
         this.tanggal = tanggal;
-    }
-   
+    }  
 
     public TransaksiPengembalian(int IdTransaksi, Buku buku, AnggotaPerpustakaan anggota, Date tanggal) {
         this.IdTransaksi = IdTransaksi;
@@ -484,22 +467,19 @@ public class TransaksiPengembalian {
     }
 }
 
+
 //------------------------------6. CLASS TRANSAKSIPEMINJAMAN------------------------------------
 package perpustakaanmodelxyz;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-/**
- *
- * @author ACER
- */
 public class TransaksiPeminjaman {
 
-   private Buku buku;
-   private AnggotaPerpustakaan anggota;
-   private Date tanggal;
-   private int IdTransaksi;
+    private Buku buku;
+    private AnggotaPerpustakaan anggota;
+    private Date tanggal;
+    private int IdTransaksi;
 
     public int getIdTransaksi() {
         return IdTransaksi;
@@ -542,19 +522,13 @@ public class TransaksiPeminjaman {
 
     boolean isEmpty() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-   
-           
-    
+    }   
 }
+
 
 //------------------------------7. CLASS NOTIFIKASI------------------------------------
 package perpustakaanmodelxyz;
 
-/**
- *
- * @author ACER
- */
 public class Notifikasi {
     static void notifikasipengembalian(){
         System.out.println("Pengembalikan buku dilakukan");
