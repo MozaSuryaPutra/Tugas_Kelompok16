@@ -1,0 +1,581 @@
+//1.main
+package perpustakaanmodelxyz;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Scanner;
+
+/**
+ *
+ * @author ACER
+ */
+
+
+
+public class PerpustakaanModelXYZ {
+    
+    
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        // TODO code application logic here
+        Admin admin = new Admin("moza","moza123");
+        Buku buku = new Buku("Laskar Pelangi",1,"Mozaa",true);
+        Buku buku2 = new Buku("Transforemrs",2,"Ghozali",true);
+        Buku buku3 = new Buku("naruto",3,"ATIKAH",true);
+        AnggotaPerpustakaan anggota = new AnggotaPerpustakaan("Atikah",1,"Metro","tIKAHH","2217");
+        
+        ////////////////////////////////////////// TAMBAH, HAPUS, DAN OUTPUT DAFTAR BUKU ADMIN
+        // TAMBAH BUKU
+        admin.tambahkoleksibuku(buku);
+        admin.tambahkoleksibuku(buku2);
+        admin.tambahkoleksibuku(buku3);
+        //HAPUS BUKU
+        admin.hapusbuku(buku);    
+         
+//         
+//         //MENGELUARKAN ISI DAFTAR BUKU
+        ArrayList<Buku>DaftarBuku = admin.getDaftarBuku();
+        System.out.println("     -----------------------------");
+        System.out.println("     ||DAFTAR BUKU YANG TERSEDIA||");
+        System.out.println("     -----------------------------");
+        for(Buku loo : DaftarBuku){
+            System.out.println("Judul Buku\t\t: " + loo.getJudul());
+            System.out.println("Nama Pengarang\t\t: " + loo.getPengarang());
+            System.out.println("Nomor ISBN\t\t: " + loo.getNoISBN());
+            System.out.println("");
+    }
+        
+         ////////////////////////////////////////// Anggota Meminjam,mengembalikan, cari BUKU
+        
+        //CARI BUKU        
+        anggota.cariBuku(admin, "naruto");
+         //PINJAM DAN KEMBALI BUKU
+        Date d1 = new Date();
+        anggota.pinjambuku(1, buku, anggota,d1 );
+        anggota.kembalibuku(1, buku, anggota, d1);
+
+
+        //////////////////////////////////////////Admin Liat daftar transaksi dan histori      
+        admin.lihatdaftartransaksi(anggota);
+        admin.liatHistoriAnggota(anggota);
+        }
+}
+
+
+//2. Class Admin
+package perpustakaanmodelxyz;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+/**
+ *
+ * @author ACER
+ */
+public class Admin {
+    AnggotaPerpustakaan anggota;
+    private String username;
+    private String password;
+    ArrayList <Buku> DaftarBuku = new ArrayList() ;
+
+    public ArrayList<Buku> getDaftarBuku() {
+        
+       return DaftarBuku;
+    }
+ 
+    public Admin(String username, String password) {
+        this.username = username;
+        this.password = password;        
+    }
+    
+    boolean izinmasuk(String usernama,String password){
+        if(this.username.equals(username) && this.password.equals(password)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    public void lihatinformasianggota(AnggotaPerpustakaan anggota) {
+        System.out.println("Masukkan username dan password");   
+        System.out.println("Nama Anggota "+anggota.getNama());   
+        System.out.println("Nomor Alamat : "+anggota.getNomornggota());
+        System.out.println("Alamat : "+anggota.getAlamat());
+    
+    }
+    
+    void tambahkoleksibuku(Buku buku){
+        boolean sudahada = false;
+        if(DaftarBuku.isEmpty()){
+        DaftarBuku.add(buku);
+    }else{
+            for(Buku daftar : DaftarBuku){
+                if(daftar.getNoISBN()==buku.getNoISBN()){
+                    System.out.println("Tidak bisa ditambahkan karena isbn sama");
+                    sudahada = true;
+                    break;
+                }                
+            }
+            if(!sudahada){
+                DaftarBuku.add(buku);                
+            }            
+        }
+}
+    void hapusbuku(Buku buku){
+        boolean sudahada = false;
+       if(DaftarBuku.isEmpty()){
+           System.out.println("Daftar buku kosong");
+       }else{
+           for(Buku daftar : DaftarBuku){
+               if(daftar.getNoISBN() == buku.getNoISBN()){
+                  sudahada = true;
+                  DaftarBuku.remove(buku);
+                  break;
+               }
+           }
+           if(!sudahada){
+               System.out.println("Buku tidak ditemukan");
+           }
+       }
+    }
+
+    void liatHistoriAnggota(AnggotaPerpustakaan anggota){
+        System.out.println("\n\n\t\t---------------");
+        System.out.println("\t\t||  HISTORY  ||");
+        System.out.println("\t\t---------------");
+        for (TransaksiPeminjaman transaksi : anggota.getPemadmin()){
+            System.out.println("Id transaksi\t\t: "+transaksi.getIdTransaksi());
+            System.out.println("Peminjam\t\t: "+transaksi.getAnggota().getNama());
+            System.out.println("Judul Buku Dipinjam\t: "+transaksi.getBuku().getJudul());
+            System.out.println("Tanggal\t\t\t: "+transaksi.getTanggal());
+            System.out.println("");
+        }
+        for (TransaksiPengembalian transaksi : anggota.getForadmin()){
+            System.out.println("Id transaksi\t\t: "+transaksi.getIdTransaksi());
+            System.out.println("Peminjam\t\t: "+transaksi.getAnggota().getNama());
+            System.out.println("Judul Buku Dikembalikan\t: "+transaksi.getBuku().getJudul());
+            System.out.println("Tanggal\t\t\t: "+transaksi.getTanggal());
+            System.out.println("");
+        }       
+    }
+    
+    void lihatdaftartransaksi(AnggotaPerpustakaan anggota) {
+        System.out.println("\n\n\t   ------------------------------");
+        System.out.println("\t   || BUKU YANG MASIH DIPINJAM ||");
+        System.out.println("\t   ------------------------------");
+        for (TransaksiPeminjaman transaksi : anggota.getPinjam()){
+            System.out.println("Id Transaksi\t\t: "+transaksi.getIdTransaksi());
+            System.out.println("Peminjam\t\t: "+transaksi.getAnggota().getNama());
+            System.out.println("Judul Buku\t\t: "+transaksi.getBuku().getJudul());
+            System.out.println("Tanggal\t\t\t: "+transaksi.getTanggal());
+            System.out.println("");
+        }
+        
+        System.out.println("\n\n\t----------------------------------");
+        System.out.println("\t|| BUKU YANG TELAH DIKEMBALIKAN ||");
+        System.out.println("\t----------------------------------");
+        for (TransaksiPengembalian transaksi : anggota.getBalik()){
+            System.out.println("Id Transaksi\t\t: "+transaksi.getIdTransaksi());
+            System.out.println("Peminjam\t\t: "+transaksi.getAnggota().getNama());
+            System.out.println("Judul Buku\t\t: "+transaksi.getBuku().getJudul());
+            System.out.println("Tanggal\t\t\t: "+transaksi.getTanggal());
+            System.out.println("");
+        }
+    }   
+    
+    
+    
+    
+    
+    
+}
+
+//3. Class Anggota Perpustakaan
+package perpustakaanmodelxyz;
+
+/**
+ *
+ * @author ACER
+ */
+
+
+import java.util.ArrayList;
+import java.util.Date;
+public class AnggotaPerpustakaan {    
+ArrayList<TransaksiPeminjaman> pemadmin = new ArrayList<>();
+    ArrayList <TransaksiPengembalian> foradmin = new ArrayList<>();
+    ArrayList<TransaksiPeminjaman> pinjam = new ArrayList<>();
+    ArrayList <TransaksiPengembalian> balik = new ArrayList<>();
+    
+    public ArrayList<TransaksiPeminjaman> getPinjam() {
+        return pinjam;
+    }
+    
+    public ArrayList<TransaksiPeminjaman> getPemadmin() {
+        return pemadmin;
+    }
+
+    public ArrayList<TransaksiPengembalian> getForadmin() {
+        return foradmin;
+    }
+    
+    public ArrayList<TransaksiPengembalian> getBalik() {
+        return balik;
+    }
+ 
+private String nama;
+    private int nomornggota;
+    private String alamat;
+    private String username;
+    private String password;
+    Buku buku;
+    TransaksiPeminjaman transaksii;
+    TransaksiPengembalian kembalii;
+    Admin admin ;
+    
+    public String getNama() {
+        return nama;
+    }
+
+    public void setNama(String nama) {
+        this.nama = nama;
+    }
+
+    public int getNomornggota() {
+        return nomornggota;
+    }
+
+    public void setNomornggota(int nomornggota) {
+        this.nomornggota = nomornggota;
+    }
+
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public AnggotaPerpustakaan(String nama, int nomornggota, String alamat, String username, String password) {
+        this.nama = nama;
+        this.nomornggota = nomornggota;
+        this.alamat = alamat;
+        this.username = username;
+        this.password = password;
+    }
+    
+    void cariBuku(Admin admin,String judul) {
+        boolean sudahada = false;
+        int i =0;
+        System.out.println("\n\t------------------");
+        System.out.println("\t||PENCARIAN BUKU||");
+        System.out.println("\t------------------");
+        for(Buku bukuu : admin.DaftarBuku ){
+            i+=1;
+            if(bukuu.getJudul().equalsIgnoreCase(judul)){
+                System.out.println("Buku Ditemukan!");
+                System.out.println("Urutan Buku\t\t: "+i);
+                System.out.println("Judul Buku\t\t: "+bukuu.getJudul());
+                System.out.println("Nama Pengarang\t\t: "+bukuu.getPengarang());
+                System.out.println(""); 
+                sudahada = true;
+            }
+        }if(!sudahada){
+            System.out.println("        Buku Tidak Ditemukan!   ");
+        }  
+        System.out.println("\n\t------------------");
+        System.out.println("       ||PENCARIAN BERAKHIR||");
+        System.out.println("\t------------------");;
+    }
+     
+    void pinjambuku(int IdTransaksi,Buku buku,AnggotaPerpustakaan anggota,Date time){
+        boolean sudahada = false;
+        TransaksiPeminjaman transaksi = new TransaksiPeminjaman(IdTransaksi,buku,anggota,time);
+        if (pinjam.isEmpty()) {
+            pinjam.add(transaksi);
+            pemadmin.add(transaksi);
+            Notifikasi.notifikasipeminjaman();
+        }else {
+            for (TransaksiPeminjaman masuk : pinjam) {
+                if (masuk.getBuku().getNoISBN() == buku.getNoISBN() && masuk.getIdTransaksi() == IdTransaksi) {
+                    System.out.println("id sama");
+                    sudahada=true;
+                    break;
+                }        
+            }if(!sudahada){
+                pinjam.add(transaksi);
+                pemadmin.add(transaksi);
+                Notifikasi.notifikasipeminjaman();         
+            } 
+        }             
+    }
+    
+    void kembalibuku(int IdTransaksi,Buku buku,AnggotaPerpustakaan anggota,Date time){    
+        boolean sudahada = false;
+        TransaksiPengembalian kembali = new TransaksiPengembalian(IdTransaksi,buku,anggota,time);
+        
+        if(pinjam.isEmpty()){
+            System.out.println("Buku kosong ");
+        }
+        else{
+            for (TransaksiPeminjaman transaksi : pinjam) {
+                if (transaksi.getBuku().getNoISBN()== kembali.getBuku().getNoISBN() && transaksi.getIdTransaksi() == kembali.getIdTransaksi()) {
+                    sudahada = true;
+                    balik.add(kembali);
+                    foradmin.add(kembali);
+                    pinjam.remove(transaksi);
+                    Notifikasi.notifikasipengembalian();
+                    break;
+                }                       
+            }if(!sudahada){
+            System.out.println("Tidak mengetahui itu buku dari mana");         
+            }      
+        }           
+    }   
+    
+    void pinjambuku(TransaksiPeminjaman trans){        
+        boolean sudahada = false;
+      
+        if (pinjam.isEmpty()) {
+             pinjam.add(trans);
+             pemadmin.add(trans);
+             Notifikasi.notifikasipeminjaman();
+            }
+        else {
+            for (TransaksiPeminjaman masuk : pinjam) {
+                if (masuk.getBuku().getNoISBN()== trans.getBuku().getNoISBN() && masuk.getIdTransaksi() == trans.getIdTransaksi()) {
+                    System.out.println("id sama");
+                    sudahada=true;
+                    break;
+                }                           
+            }if(!sudahada){
+                pinjam.add(trans);
+                pemadmin.add(trans);
+                Notifikasi.notifikasipeminjaman();
+            } 
+        }        
+    }
+    
+    void kembalibuku(TransaksiPengembalian kem){        
+        boolean sudahada = false;
+       
+        if(pinjam.isEmpty()){
+            System.out.println("Buku kosong ");
+        }else{
+            for (TransaksiPeminjaman transaksi : pinjam) {
+                if (transaksi.getBuku().getNoISBN()== kem.getBuku().getNoISBN() && transaksi.getIdTransaksi() == kem.getIdTransaksi()) {
+                    sudahada = true;
+                    balik.add(kem);
+                    foradmin.add(kem);
+                    pinjam.remove(transaksi);
+                    Notifikasi.notifikasipengembalian();
+                    break;
+                }                
+            }if(!sudahada){
+                System.out.println("Tidak mengetahui itu buku dari mana");
+            }     
+        }
+    }
+}
+
+//4. Class Buku
+package perpustakaanmodelxyz;
+
+/**
+ *
+ * @author ACER
+ */
+public class Buku {
+private String judul;
+    private int noISBN;
+    private String pengarang;
+    private boolean tersedia;
+
+    public String getJudul() {
+        return judul;
+    }
+
+    public void setJudul(String judul) {
+        this.judul = judul;
+    }
+
+    public int getNoISBN() {
+        return noISBN;
+    }
+
+    public void setNoISBN(int noISBN) {
+        this.noISBN = noISBN;
+    }
+
+    public String getPengarang() {
+        return pengarang;
+    }
+
+    public void setPengarang(String pengarang) {
+        this.pengarang = pengarang;
+    }
+
+    public boolean isTersedia() {
+        return tersedia;
+    }
+
+    public void setTersedia(boolean tersedia) {
+        this.tersedia = tersedia;
+    }
+    public Buku(String judul, int noISBN, String pengarang, boolean tersedia) {
+        this.judul = judul;
+        this.noISBN = noISBN;
+        this.pengarang = pengarang;
+        this.tersedia = tersedia;
+    }    
+}
+
+//5. Class TransaksiPengembalian
+package perpustakaanmodelxyz;
+
+import java.util.Date;
+
+/**
+ *
+ * @author ACER
+ */
+public class TransaksiPengembalian {
+   private int IdTransaksi;
+   private Buku buku;
+   private AnggotaPerpustakaan anggota;
+   private Date tanggal;
+    public int getIdTransaksi() {
+        return IdTransaksi;
+    }
+
+    public void setIdTransaksi(int IdTransaksi) {
+        this.IdTransaksi = IdTransaksi;
+    }
+
+    public Buku getBuku() {
+        return buku;
+    }
+
+    public void setBuku(Buku buku) {
+        this.buku = buku;
+    }
+
+    public AnggotaPerpustakaan getAnggota() {
+        return anggota;
+    }
+
+    public void setAnggota(AnggotaPerpustakaan anggota) {
+        this.anggota = anggota;
+    }
+
+    public Date getTanggal() {
+        return tanggal;
+    }
+
+    public void setTanggal(Date tanggal) {
+        this.tanggal = tanggal;
+    }
+   
+
+    public TransaksiPengembalian(int IdTransaksi, Buku buku, AnggotaPerpustakaan anggota, Date tanggal) {
+        this.IdTransaksi = IdTransaksi;
+        this.buku = buku;
+        this.anggota = anggota;
+        this.tanggal = tanggal;
+    }
+}
+
+//6. Class TransaksiPeminjaman
+package perpustakaanmodelxyz;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+/**
+ *
+ * @author ACER
+ */
+public class TransaksiPeminjaman {
+
+   private Buku buku;
+   private AnggotaPerpustakaan anggota;
+   private Date tanggal;
+   private int IdTransaksi;
+
+    public int getIdTransaksi() {
+        return IdTransaksi;
+    }
+
+    public void setIdTransaksi(int IdTransaksi) {
+        this.IdTransaksi = IdTransaksi;
+    }
+
+    public Buku getBuku() {
+        return buku;
+    }
+
+    public void setBuku(Buku buku) {
+        this.buku = buku;
+    }
+
+    public AnggotaPerpustakaan getAnggota() {
+        return anggota;
+    }
+
+    public void setAnggota(AnggotaPerpustakaan anggota) {
+        this.anggota = anggota;
+    }
+
+    public Date getTanggal() {
+        return tanggal;
+    }
+
+    public void setTanggal(Date tanggal) {
+        this.tanggal = tanggal;
+    }   
+
+    public TransaksiPeminjaman(int IdTransaksi, Buku buku, AnggotaPerpustakaan anggota, Date tanggal) {
+        this.IdTransaksi = IdTransaksi;
+        this.buku = buku;
+        this.anggota = anggota;
+        this.tanggal = tanggal;
+    }
+
+    boolean isEmpty() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+   
+           
+    
+}
+
+//7. Class Notifikasi
+package perpustakaanmodelxyz;
+
+/**
+ *
+ * @author ACER
+ */
+public class Notifikasi {
+    static void notifikasipengembalian(){
+        System.out.println("Pengembalikan buku dilakukan");
+    }
+    static void notifikasipeminjaman(){
+        System.out.println("Peminjaman buku dilakukan");
+    }
+}
