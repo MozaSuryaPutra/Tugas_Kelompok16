@@ -1,0 +1,135 @@
+package perpustakaanmodelxyz;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+/**
+ *
+ * @author ACER
+ */
+public class Admin {
+    AnggotaPerpustakaan anggota;
+    private String username;
+    private String password;
+    ArrayList <Buku> DaftarBuku = new ArrayList() ;
+
+    public ArrayList<Buku> getDaftarBuku() {
+        
+       return DaftarBuku;
+    }
+
+   
+   
+
+    public Admin(String username, String password) {
+        this.username = username;
+        this.password = password;
+        
+    }
+    
+    boolean izinmasuk(String usernama,String password){
+        if(this.username.equals(username) && this.password.equals(password)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    public void lihatinformasianggota(AnggotaPerpustakaan anggota) {
+        System.out.println("Masukkan username dan password");
+       
+        
+    
+        System.out.println("Nama Anggota "+anggota.getNama());   
+        System.out.println("Nomor Alamat : "+anggota.getNomornggota());
+        System.out.println("Alamat : "+anggota.getAlamat());
+    
+    }
+    
+    void tambahkoleksibuku(Buku buku){
+        boolean sudahada = false;
+        if(DaftarBuku.isEmpty()){
+        DaftarBuku.add(buku);
+    }else{
+            for(Buku daftar : DaftarBuku){
+                if(daftar.getNoISBN()==buku.getNoISBN()){
+                    System.out.println("Tidak bisa ditambahkan karena isbn sama");
+                    sudahada = true;
+                    break;
+                }
+                
+            }
+            if(!sudahada){
+                DaftarBuku.add(buku);
+                
+            }
+            
+        }
+}
+    void hapusbuku(Buku buku){
+        boolean sudahada = false;
+       if(DaftarBuku.isEmpty()){
+           System.out.println("Daftar buku kosong");
+       }else{
+           for(Buku daftar : DaftarBuku){
+               if(daftar.getNoISBN() == buku.getNoISBN()){
+                  sudahada = true;
+                  DaftarBuku.remove(buku);
+                  break;
+               }
+           }
+           if(!sudahada){
+               System.out.println("Buku tidak ditemukan");
+           }
+       }
+    }
+
+    void liatHistoriAnggota(AnggotaPerpustakaan anggota){
+        System.out.println("\n\n\t\t---------------");
+        System.out.println("\t\t||  HISTORY  ||");
+        System.out.println("\t\t---------------");
+        for (TransaksiPeminjaman transaksi : anggota.getPemadmin()){
+            System.out.println("Id transaksi\t\t: "+transaksi.getIdTransaksi());
+            System.out.println("Peminjam\t\t: "+transaksi.getAnggota().getNama());
+            System.out.println("Judul Buku Dipinjam\t: "+transaksi.getBuku().getJudul());
+            System.out.println("Tanggal\t\t\t: "+transaksi.getTanggal());
+            System.out.println("");
+        }
+        for (TransaksiPengembalian transaksi : anggota.getForadmin()){
+            System.out.println("Id transaksi\t\t: "+transaksi.getIdTransaksi());
+            System.out.println("Peminjam\t\t: "+transaksi.getAnggota().getNama());
+            System.out.println("Judul Buku Dikembalikan\t: "+transaksi.getBuku().getJudul());
+            System.out.println("Tanggal\t\t\t: "+transaksi.getTanggal());
+            System.out.println("");
+        }       
+    }
+    
+    void lihatdaftartransaksi(AnggotaPerpustakaan anggota) {
+        System.out.println("\n\n\t   ------------------------------");
+        System.out.println("\t   || BUKU YANG MASIH DIPINJAM ||");
+        System.out.println("\t   ------------------------------");
+        for (TransaksiPeminjaman transaksi : anggota.getPinjam()){
+            System.out.println("Id Transaksi\t\t: "+transaksi.getIdTransaksi());
+            System.out.println("Peminjam\t\t: "+transaksi.getAnggota().getNama());
+            System.out.println("Judul Buku\t\t: "+transaksi.getBuku().getJudul());
+            System.out.println("Tanggal\t\t\t: "+transaksi.getTanggal());
+            System.out.println("");
+        }
+        
+        System.out.println("\n\n\t----------------------------------");
+        System.out.println("\t|| BUKU YANG TELAH DIKEMBALIKAN ||");
+        System.out.println("\t----------------------------------");
+        for (TransaksiPengembalian transaksi : anggota.getBalik()){
+            System.out.println("Id Transaksi\t\t: "+transaksi.getIdTransaksi());
+            System.out.println("Peminjam\t\t: "+transaksi.getAnggota().getNama());
+            System.out.println("Judul Buku\t\t: "+transaksi.getBuku().getJudul());
+            System.out.println("Tanggal\t\t\t: "+transaksi.getTanggal());
+            System.out.println("");
+        }
+    }   
+    
+    
+    
+    
+    
+    
+}
