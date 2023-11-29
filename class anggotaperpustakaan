@@ -1,0 +1,204 @@
+package perpustakaanmodelxyz;
+
+/**
+ *
+ * @author ACER
+ */
+
+
+import java.util.ArrayList;
+import java.util.Date;
+
+public class AnggotaPerpustakaan {
+    
+ArrayList<TransaksiPeminjaman> pemadmin = new ArrayList<>();
+    ArrayList <TransaksiPengembalian> foradmin = new ArrayList<>();
+    ArrayList<TransaksiPeminjaman> pinjam = new ArrayList<>();
+    ArrayList <TransaksiPengembalian> balik = new ArrayList<>();
+    
+    
+ 
+private String nama;
+    private int nomornggota;
+    private String alamat;
+    private String username;
+    private String password;
+    Buku buku;
+    TransaksiPeminjaman transaksii;
+    TransaksiPengembalian kembalii;
+    Admin admin ;
+    public ArrayList<TransaksiPeminjaman> getPinjam() {
+        return pinjam;
+    }
+    
+    public ArrayList<TransaksiPeminjaman> getPemadmin() {
+        return pemadmin;
+    }
+
+    public ArrayList<TransaksiPengembalian> getForadmin() {
+        return foradmin;
+    }
+    
+    public ArrayList<TransaksiPengembalian> getBalik() {
+        return balik;
+    }
+    public String getNama() {
+        return nama;
+    }
+
+    public void setNama(String nama) {
+        this.nama = nama;
+    }
+
+    public int getNomornggota() {
+        return nomornggota;
+    }
+
+    public void setNomornggota(int nomornggota) {
+        this.nomornggota = nomornggota;
+    }
+
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public AnggotaPerpustakaan(String nama, int nomornggota, String alamat, String username, String password) {
+        this.nama = nama;
+        this.nomornggota = nomornggota;
+        this.alamat = alamat;
+        this.username = username;
+        this.password = password;
+    }
+    
+    void cariBuku(Admin admin,String judul) {
+        boolean sudahada = false;
+        int i =0;
+        System.out.println("\n\t------------------");
+        System.out.println("\t||PENCARIAN BUKU||");
+        System.out.println("\t------------------");
+        for(Buku bukuu : admin.DaftarBuku ){
+            i+=1;
+            if(bukuu.getJudul().equalsIgnoreCase(judul)){
+                System.out.println("Buku Ditemukan!");
+                System.out.println("Urutan Buku\t\t: "+i);
+                System.out.println("Judul Buku\t\t: "+bukuu.getJudul());
+                System.out.println("Nama Pengarang\t\t: "+bukuu.getPengarang());
+                System.out.println(""); 
+                sudahada = true;
+            }
+        }if(!sudahada){
+            System.out.println("        Buku Tidak Ditemukan!   ");
+        }  System.out.println("\n\t------------------");
+        System.out.println("       ||PENCARIAN BERAKHIR||");
+        System.out.println("\t------------------");;
+    }
+     
+    void pinjambuku(int IdTransaksi,Buku buku,AnggotaPerpustakaan anggota,Date time){
+        boolean sudahada = false;
+        TransaksiPeminjaman transaksi = new TransaksiPeminjaman(IdTransaksi,buku,anggota,time);
+        if (pinjam.isEmpty()) {
+            pinjam.add(transaksi);
+            pemadmin.add(transaksi);
+            Notifikasi.notifikasipeminjaman();
+        }else {
+            for (TransaksiPeminjaman masuk : pinjam) {
+                if (masuk.getBuku().getNoISBN() == buku.getNoISBN() && masuk.getIdTransaksi() == IdTransaksi) {
+                    System.out.println("id sama");
+                    sudahada=true;
+                    break;
+                }        
+            }if(!sudahada){
+                pinjam.add(transaksi);
+                pemadmin.add(transaksi);
+                Notifikasi.notifikasipeminjaman();         
+            } 
+        }             
+    }
+    
+    void kembalibuku(int IdTransaksi,Buku buku,AnggotaPerpustakaan anggota,Date time){    
+        boolean sudahada = false;
+        TransaksiPengembalian kembali = new TransaksiPengembalian(IdTransaksi,buku,anggota,time);
+        
+        if(pinjam.isEmpty()){
+            System.out.println("Buku kosong ");
+        }
+        else{
+            for (TransaksiPeminjaman transaksi : pinjam) {
+                if (transaksi.getBuku().getNoISBN()== kembali.getBuku().getNoISBN() && transaksi.getIdTransaksi() == kembali.getIdTransaksi()) {
+                    sudahada = true;
+                    balik.add(kembali);
+                    foradmin.add(kembali);
+                    pinjam.remove(transaksi);
+                    Notifikasi.notifikasipengembalian();
+                    break;
+                }                       
+            }if(!sudahada){
+            System.out.println("Tidak mengetahui itu buku dari mana");         
+            }      
+        }           
+    }   
+    
+    void pinjambuku(TransaksiPeminjaman trans){        
+        boolean sudahada = false;
+       
+        if (pinjam.isEmpty()) {
+             pinjam.add(trans);
+             pemadmin.add(trans);
+             Notifikasi.notifikasipeminjaman();
+            }
+        else {
+            for (TransaksiPeminjaman masuk : pinjam) {
+                if (masuk.getBuku().getNoISBN()== trans.getBuku().getNoISBN() && masuk.getIdTransaksi() == trans.getIdTransaksi()) {
+                    System.out.println("id sama");
+                    sudahada=true;
+                    break;
+                }                           
+            }if(!sudahada){
+                pinjam.add(trans);
+                pemadmin.add(trans);
+                Notifikasi.notifikasipeminjaman();
+            } 
+        }        
+    }
+    
+    void kembalibuku(TransaksiPengembalian kem){        
+        boolean sudahada = false;
+       
+        if(pinjam.isEmpty()){
+            System.out.println("Buku kosong ");
+        }else{
+            for (TransaksiPeminjaman transaksi : pinjam) {
+                if (transaksi.getBuku().getNoISBN()== kem.getBuku().getNoISBN() && transaksi.getIdTransaksi() == kem.getIdTransaksi()) {
+                    sudahada = true;
+                    balik.add(kem);
+                    foradmin.add(kem);
+                    pinjam.remove(transaksi);
+                    Notifikasi.notifikasipengembalian();
+                    break;
+                }                
+            }if(!sudahada){
+                System.out.println("Tidak mengetahui itu buku dari mana");
+            }     
+        }
+    }
+}
