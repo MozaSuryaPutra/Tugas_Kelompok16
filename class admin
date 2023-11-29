@@ -12,18 +12,13 @@ public class Admin {
     private String password;
     ArrayList <Buku> DaftarBuku = new ArrayList() ;
 
-    public ArrayList<Buku> getDaftarBuku() {
-        
+    public ArrayList<Buku> getDaftarBuku() {        
        return DaftarBuku;
     }
 
-   
-   
-
     public Admin(String username, String password) {
         this.username = username;
-        this.password = password;
-        
+        this.password = password;      
     }
     
     boolean izinmasuk(String usernama,String password){
@@ -36,13 +31,9 @@ public class Admin {
     
     public void lihatinformasianggota(AnggotaPerpustakaan anggota) {
         System.out.println("Masukkan username dan password");
-       
-        
-    
         System.out.println("Nama Anggota "+anggota.getNama());   
         System.out.println("Nomor Alamat : "+anggota.getNomornggota());
-        System.out.println("Alamat : "+anggota.getAlamat());
-    
+        System.out.println("Alamat : "+anggota.getAlamat());    
     }
     
     void tambahkoleksibuku(Buku buku){
@@ -55,16 +46,14 @@ public class Admin {
                     System.out.println("Tidak bisa ditambahkan karena isbn sama");
                     sudahada = true;
                     break;
-                }
-                
+                }                
             }
             if(!sudahada){
-                DaftarBuku.add(buku);
-                
-            }
-            
+                DaftarBuku.add(buku);                
+            } 
         }
-}
+    }
+
     void hapusbuku(Buku buku){
         boolean sudahada = false;
        if(DaftarBuku.isEmpty()){
@@ -113,8 +102,7 @@ public class Admin {
             System.out.println("Judul Buku\t\t: "+transaksi.getBuku().getJudul());
             System.out.println("Tanggal\t\t\t: "+transaksi.getTanggal());
             System.out.println("");
-        }
-        
+        }     
         System.out.println("\n\n\t----------------------------------");
         System.out.println("\t|| BUKU YANG TELAH DIKEMBALIKAN ||");
         System.out.println("\t----------------------------------");
@@ -125,11 +113,5 @@ public class Admin {
             System.out.println("Tanggal\t\t\t: "+transaksi.getTanggal());
             System.out.println("");
         }
-    }   
-    
-    
-    
-    
-    
-    
+    }      
 }
