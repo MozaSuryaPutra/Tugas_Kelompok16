@@ -15,7 +15,7 @@ public class AnggotaPerpustakaan {
     ArrayList<TransaksiPeminjaman> pinjam = new ArrayList<>();
     ArrayList <TransaksiPengembalian> balik = new ArrayList<>();
 
-private String nama;
+    private String nama;
     private int nomornggota;
     private String alamat;
     private String username;
